@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JWT decoder</title>
+  <style>
+    #jwt-output,
+    #jwt-input {
+      font-family: 'Courier New', Courier, monospace;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>JWT decoder</h1>
+  <h2>Copy your JWT here</h2>
+  <textarea id="jwt-input" style="width: 100%; height: 100px;">
+  </textarea><br>
+  <h2>Decoded JWT payload</h2>
+  <pre id="jwt-output" style="width: 100%; overflow-wrap: anywhere; white-space: pre-wrap;"></pre>
+  <script>
+    // generic JWT parsing function
+    function parseJwt(token) {
+      function decodeBase64url(b64) {
+        b64.replace(/-/g, '+').replace(/_/g, '/');
+        return decodeURIComponent(window.atob(b64).split('').map(function (c) {
+          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+      }
+      const jwtParts = token.split('.');
+      return {
+        header: JSON.parse(decodeBase64url(jwtParts[0])),
+        body: JSON.parse(decodeBase64url(jwtParts[1])),
+        sig: jwtParts[2]
+      };
+    }
+  </script>
+  <script>
+    const input = document.getElementById("jwt-input");
+    const output = document.getElementById("jwt-output");
+    const decode = document.getElementById("jwt-decode");
+
+    function process(event) {
+      const DATES = ["iat", "exp", "nbf"];
+      try {
+        const rawJwt = input.value.trim();
+        if (!rawJwt) {
+          output.innerText = "";
+          return;
+        }
+        const json = parseJwt(rawJwt);
+        for (const claim in json.body) {
+          if (DATES.includes(claim)) {
+            const element = json.body[claim];
+            json.body[claim] = `${new Date(element * 1000).toUTCString()} (${element})`;
+          }
+        }
+        output.innerText = JSON.stringify(json, undefined, 4);
+      } catch (error) {
+        console.error(error);
+        output.innerText = "ERROR: The JWT value could not be parsed";
+      }
+    }
+    input.addEventListener("keyup", process);
+  </script>
+</body>
+
+</html>
