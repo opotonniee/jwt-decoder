@@ -6,15 +6,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>JWT decoder</title>
   <style>
+    body, h1, h2 {
+      font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    }
     #jwt-output,
     #jwt-input {
       font-family: 'Courier New', Courier, monospace;
+    }
+    .banner {
+      float: right;
     }
   </style>
 </head>
 
 <body>
-  <h1>JWT decoder</h1>
+  <div class="banner">
+    <a href="https://github.com/opotonniee/jwt-decoder" title="Link to GitHub project">
+      <img width="64px" src="https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png" alt="GitHub logo">
+    </a>
+  </div>
+  <h1>JWT Decoder</h1>
   <h2>Copy your JWT here</h2>
   <textarea id="jwt-input" style="width: 100%; height: 100px;">
   </textarea><br>
@@ -33,14 +44,13 @@
       return {
         header: JSON.parse(decodeBase64url(jwtParts[0])),
         body: JSON.parse(decodeBase64url(jwtParts[1])),
-        sig: jwtParts[2]
+        signature: jwtParts[2]
       };
     }
   </script>
   <script>
     const input = document.getElementById("jwt-input");
     const output = document.getElementById("jwt-output");
-    const decode = document.getElementById("jwt-decode");
 
     function process(event) {
       const DATES = ["iat", "exp", "nbf"];
@@ -66,5 +76,4 @@
     input.addEventListener("keyup", process);
   </script>
 </body>
-
 </html>
