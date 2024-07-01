@@ -5,37 +5,24 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>JWT decoder</title>
-  <style>
-    body, h1, h2 {
-      font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    }
-    #jwt-output,
-    #jwt-input {
-      font-family: 'Courier New', Courier, monospace;
-    }
-    .banner {
-      float: right;
-    }
-  </style>
 </head>
 
-<body>
-  <div class="banner">
+<body style="font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">
+  <div class="banner" style="float: right">
     <a href="https://github.com/opotonniee/jwt-decoder" title="Link to GitHub project">
       <img width="64px" src="https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png" alt="GitHub logo">
     </a>
   </div>
   <h1>JWT Decoder</h1>
   <h2>Copy your JWT here</h2>
-  <textarea id="jwt-input" style="width: 100%; height: 100px;">
-  </textarea><br>
+  <textarea id="jwt-input" style="width: 100%; height: 100px; font-family: 'Courier New', Courier, monospace;"></textarea><br>
   <h2>Decoded JWT payload</h2>
-  <pre id="jwt-output" style="width: 100%; overflow-wrap: anywhere; white-space: pre-wrap;"></pre>
+  <pre id="jwt-output" style="width: 100%; overflow-wrap: anywhere; white-space: pre-wrap; font-family: 'Courier New', Courier, monospace;"></pre>
   <script>
     // generic JWT parsing function
     function parseJwt(token) {
       function decodeBase64url(b64) {
-        b64.replace(/-/g, '+').replace(/_/g, '/');
+        b64 = b64.replace(/-/g, '+').replace(/_/g, '/');
         return decodeURIComponent(window.atob(b64).split('').map(function (c) {
           return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
         }).join(''));
