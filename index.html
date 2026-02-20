@@ -31,7 +31,7 @@
       return {
         header: JSON.parse(decodeBase64url(jwtParts[0])),
         body: JSON.parse(decodeBase64url(jwtParts[1])),
-        signature: jwtParts[2]
+        signature: jwtParts[2].replaceAll(/\s/g,"")
       };
     }
   </script>
